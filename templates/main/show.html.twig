@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ character.name }}{% endblock %}
+
+{% block main %}
+    <a href="{{ path('characters') }}">Retour</a>
+    <h1>{{ character.name }}</h1>
+    <div class="border m-1 row">
+        <div class="col-md-3">
+            <img style="height: 200px;width: auto;" src="{{ absolute_url(character.thumbnail.path ~ '.' ~ character.thumbnail.extension) }}" alt="{{ character.name }}">
+        </div>
+        <div class="col-md-9">
+            <h2>{{ character.name }}</h2>
+            <p>{{ character.description ?: 'no description'  }}</p>
+            <p>{{ character.id }}</p>
+            <p>Ressources :
+                <a target="_blank" href="{{ absolute_url(character.urls[0].url) }}">{{ character.urls[0].type }}</a>
+                <a target="_blank" href="{{ absolute_url(character.urls[1].url) }}">{{ character.urls[1].type }}</a>
+                {% if character.urls[2] is defined %}
+                    <a target="_blank" href="{{ absolute_url(character.urls[2].url) }}">{{ character.urls[2].type }}</a>
+                {% endif %}
+            </p>
+            <a href=""></a>
+        </div>
+    </div>
+{% endblock %}

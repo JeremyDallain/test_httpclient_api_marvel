@@ -4,7 +4,10 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-
+    marvel_public_key: '%env(MARVEL_PUBLIC_KEY)%'
+    marvel_secret_key: '%env(MARVEl_SECRET_KEY)%'
+    marvel_hash: '%env(MARVEL_HASH)%'
+    marvel_timestamp: '%env(MARVEL_TIMESTAMP)%'
 services:
     # default configuration for services in *this* file
     _defaults:

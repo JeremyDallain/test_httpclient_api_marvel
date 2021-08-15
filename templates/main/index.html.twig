@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}main{% endblock %}
+
+{% block main %}
+    <h1>Characters</h1>
+    {{ include('main/_nav.html.twig') }}
+    {% if characters.hasToPaginate %}
+        <div class="navigation text-center">
+            <ul class="pagination">
+                <li class="next"><a href="{{ path('characters') }}" rel="next">Première <i class="fa fw fa-arrow-right"></i></a></li>
+                {% if characters.hasPreviousPage %}
+                    <li class="prev"><a href="{{ path('characters_paginated', {page: characters.previousPage}) }}" rel="previous"><i class="fa fw fa-long-arrow-left"></i> Précedent</a></li>
+                {% else %}
+                    <li class="prev disabled"><span><i class="fa fw fa-arrow-left"></i> Précedent</span></li>
+                {% endif %}
+
+                {% for i in 1..characters.lastPage %}
+                    {% if i == characters.currentPage %}
+                        <li class="active"><span>{{ i }} <span class="sr-only">Page courante</span></span></li>
+                    {% else %}
+                        <li><a href="{{ path('characters_paginated', {page: i}) }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if characters.hasNextPage %}
+                    <li class="next"><a href="{{ path('characters_paginated', {page: characters.nextPage}) }}" rel="next">Suivant <i class="fa fw fa-arrow-right"></i></a></li>
+                {% else %}
+                    <li class="next disabled"><span>Suivant <i class="fa fw fa-arrow-right"></i></span></li>
+                {% endif %}
+                <li class="next"><a href="{{ path('characters_paginated', {page: characters.lastPage}) }}" rel="next">Dernière <i class="fa fw fa-arrow-right"></i></a></li>
+            </ul>
+        </div>
+    {% endif %}
+    {% for character in characters.results %}
+        <div class="border m-1 row">
+            <div class="col-md-3">
+                  <img style="height: 200px;width: auto;" src="{{ absolute_url(character.thumbnail.path ~ '.' ~ character.thumbnail.extension) }}" alt="{{ character.name }}">
+            </div>
+            <div class="col-md-9">
+                <h2>{{ character.name }}</h2>
+                <p>{{ character.description ?: 'no description'  }}</p>
+                <p>{{ character.id }}</p>
+                <p>Ressources :
+                    <a target="_blank" href="{{ absolute_url(character.urls[0].url) }}">{{ character.urls[0].type }}</a>
+                    <a target="_blank" href="{{ absolute_url(character.urls[1].url) }}">{{ character.urls[1].type }}</a>
+                    {% if character.urls[2] is defined %}
+                        <a target="_blank" href="{{ absolute_url(character.urls[2].url) }}">{{ character.urls[2].type }}</a>
+                    {% endif %}
+                </p>
+{#                <a href="{{ path('character', {slug : character.name | slug, id: character.id}) }}">VOIR</a>#}
+                <form action="{{ path('character', {slug : character.name | slug}) }}" method="post">
+                    <input type="hidden" name="id" value="{{ character.id }}">
+                    <button>VOIR</button>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
